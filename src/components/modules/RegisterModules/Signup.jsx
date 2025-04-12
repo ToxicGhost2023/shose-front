@@ -1,10 +1,15 @@
 "use client"
 
+import { fetchRegister, verifyOtpCode } from "@/utils/fetching";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 function Signup() {
+    const router = useRouter();
     const [isOtpSent, setIsOtpSent] = useState(false);
+    const [otp, setOtp] = useState("");
     const {
         register,
         handleSubmit,
@@ -12,47 +17,71 @@ function Signup() {
     } = useForm();
 
 
+
     const onSubmit = async (data) => {
-        console.log("onSubmit")
-        // try {
-        //   const res = await fetch("http://localhost:3400/auth/register", {
-        //     method: "POST",
-        //     headers: { "Content-Type": "application/json" },
-        //     body: JSON.stringify(data),
-        //   });
-        //   if (res.status == 400) {
-        //     alert(" این شماره قبلا استفاده شده");
-        //     return;
-        //   }
-        //   const result = await res.json();
-        //   const code = result?.otp?.code;
+        const { data: result, error } = await fetchRegister(data);
 
-        //   setIsOtpSent(true);
+        if (error) {
+            alert(error);
+            return;
+        }
+        const code = result?.otp?.code;
 
-        //   Swal.fire({
-        //     title: "کد یبار مصرف",
-        //     text: code, // نمایش کد
-        //     icon: "info",
-        //     showCancelButton: true,
-        //     confirmButtonText: "کپی کد",
-        //     cancelButtonText: "باشه",
-        //     preConfirm: () => {
-        //       navigator.clipboard.writeText(code).then(() => {
-        //         Swal.fire({
-        //           title: "کد کپی شد",
-        //           text: "کد با موفقیت کپی شد",
-        //           icon: "success",
-        //           timer: 1500,
-        //           showConfirmButton: false,
-        //         });
-        //       });
-        //     },
-        //   });
-        // } catch (error) {
-        //   console.error("خطا در ثبت نام:", error.message);
-        // }
-    }
+        setIsOtpSent(true);
 
+        Swal.fire({
+            title: "کد یبار مصرف",
+            text: code, // نمایش کد
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonText: "کپی کد",
+            cancelButtonText: "باشه",
+            preConfirm: () => {
+                navigator.clipboard.writeText(code).then(() => {
+                    Swal.fire({
+                        title: "کد کپی شد",
+                        text: "کد با موفقیت کپی شد",
+                        icon: "success",
+                        timer: 1500,
+                        showConfirmButton: false,
+                    });
+                });
+            },
+        });
+
+    };
+
+    const otpHandler = async () => {
+        if (!otp) {
+            return Swal.fire({
+                title: "خطا",
+                text: "رمز یبار مصرف را وارد کنید",
+                icon: "error",
+            });
+        }
+        const result = await verifyOtpCode(otp);
+
+        if (result?.status == 200) {
+            Swal.fire({
+                title: "بررسی  رمز یبار مصرف",
+                text: "با موفقیت ثبت شد",
+                icon: "success",
+            });
+        } else {
+            Swal.fire({
+                title: "بررسی  رمز یبار مصرف",
+                text: "مشکلی رخ داده است",
+                icon: "error",
+                router: router.push("/register")
+            });
+        }
+        if (result?.user?.role == "admin") {
+            router.push("/dashboard");
+        } else {
+            router.push("/");
+        }
+
+    };
 
     return (
         <>
@@ -85,7 +114,7 @@ function Signup() {
                         className="w-full max-w-md p-6  rounded-3xl "
                     >
                         <form
-
+                            onSubmit={handleSubmit(onSubmit)}
                             className="flex flex-col gap-4 md:-mt-[200px]"
                         >
                             <h2 className="text-3xl font-bold text-center ">

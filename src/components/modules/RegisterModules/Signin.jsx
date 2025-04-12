@@ -1,8 +1,12 @@
+import { fetchLogin, verifyOtpCode } from "@/utils/fetching";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 
 
 function Signin() {
+    const router = useRouter()
     const [otp, setOtp] = useState("");
     const [isOtpSent, setIsOtpSent] = useState(false);
     const [mobile, setMobile] = useState("");
@@ -15,51 +19,72 @@ function Signin() {
 
 
     const onSubmit = async (data) => {
-        console.log(data)
-        // try {
-        //   const res = await fetch("http://localhost:3400/auth/login", {
-        //     method: "POST",
-        //     headers: { "Content-Type": "application/json" },
-        //     body: JSON.stringify(data),
-        //     credentials: "include",
-        //   });
 
-        //   const result = await res.json();
+        const { data: result, error } = await fetchLogin(data);
 
-        //   if (res.status !== 200) {
-        //     return Swal.fire({
-        //       title: "خطا",
-        //       text: result.error || "مشکلی در ارسال کد پیش آمده",
-        //       icon: "error",
-        //     });
-        //   }
+        if (error) {
+            return Swal.fire({
+                title: "خطا",
+                text: error,
+                icon: "error",
+            });
+        }
 
-        //   const code = result?.otp;
-        //   setIsOtpSent(true);
-        //   setMobile(data.mobile);
+        const code = result?.otp;
+        setIsOtpSent(true);
+        setMobile(data.mobile);
 
-        //   Swal.fire({
-        //     title: "کد یبار مصرف",
-        //     text: code, // نمایش کد OTP
-        //     icon: "info",
-        //     showCancelButton: true,
-        //     confirmButtonText: "کپی کد",
-        //     cancelButtonText: "باشه",
-        //     preConfirm: () => {
-        //       navigator.clipboard.writeText(code).then(() => {
-        //         Swal.fire({
-        //           title: "کد کپی شد",
-        //           text: "کد با موفقیت کپی شد",
-        //           icon: "success",
-        //           timer: 1500,
-        //           showConfirmButton: false,
-        //         });
-        //       });
-        //     },
-        //   });
-        // } catch (error) {
-        //   console.error("خطا در ارسال کد:", error.message);
-        // }
+        Swal.fire({
+            title: "کد یبار مصرف",
+            text: code, // نمایش کد OTP
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonText: "کپی کد",
+            cancelButtonText: "باشه",
+            preConfirm: () => {
+                navigator.clipboard.writeText(code).then(() => {
+                    Swal.fire({
+                        title: "کد کپی شد",
+                        text: "کد با موفقیت کپی شد",
+                        icon: "success",
+                        timer: 1500,
+                        showConfirmButton: false,
+                    });
+                });
+            },
+        });
+
+    };
+    const otpHandler = async () => {
+        if (!otp) {
+            return Swal.fire({
+                title: "خطا",
+                text: "رمز یبار مصرف را وارد کنید",
+                icon: "error",
+            });
+        }
+        const result = await verifyOtpCode(otp);
+
+
+        if (result?.status == 200) {
+            Swal.fire({
+                title: "بررسی  رمز یبار مصرف",
+                text: "با موفقیت ثبت شد",
+                icon: "success",
+            });
+        } else {
+            Swal.fire({
+                title: "بررسی  رمز یبار مصرف",
+                text: "مشکلی رخ داده است",
+                icon: "error",
+            });
+        }
+        if (result?.user?.role == "admin") {
+            router.push("/panelAdmin");
+        } else {
+            router.push("/");
+        }
+
     };
 
 

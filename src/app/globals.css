@@ -60,10 +60,23 @@ textarea {
 
 .neumorphics {
   background-color: var(--background);
-  box-shadow: 5px 5px 9px var(--neu-shadow1), -5px -5px 9px var(--neu-shadow2);
+  box-shadow:
+    inset 5px 5px 9px var(--neu-shadow1),
+    inset -5px -5px 9px var(--neu-shadow2);
   transition: all 0.3s ease;
+  border-radius: 12px;
+  /* اختیاری برای زیبایی */
 }
+
 
 .neumorphic:hover {
   box-shadow: inset 3px 3px 6px var(--neu-shadow1), inset -3px -3px 6px var(--neu-shadow2);
+}
+
+.neumorphic-dark {
+  background-color: var(--background);
+  box-shadow: 5px 5px 10px var(--neu-shadow1), -5px -5px 10px var(--neu-shadow2);
+  border-radius: 16px;
+  padding: 12px;
+  transition: all 0.3s ease;
 }

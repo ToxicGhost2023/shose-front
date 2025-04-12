@@ -1,15 +1,48 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Drawer } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import NeuButton from './NeuButton';
 import Link from 'next/link';
+import Logout from '../RegisterModules/Logout';
+import { userDetails } from '@/utils/fetching';
 
-function DrawerHeader() {
+function DrawerHeader({ token }) {
+
+    const [user, setUser] = useState(null);
     const [open, setOpen] = useState(false);
     const showDrawer = () => setOpen(true);
     const onClose = () => setOpen(false);
+
+
+
+
+    useEffect(() => {
+        async function fetchUserData() {
+            try {
+                const data = await userDetails({ token });
+
+                if (data) {
+                    setUser(data?.role);
+                } else {
+                    console.error("Data not found or error occurred");
+
+                }
+            } catch (err) {
+                console.error("Error fetching user details:", err);
+            }
+        }
+
+        if (token) {
+            fetchUserData();
+        } else {
+            console.error("No token available");
+        }
+    }, [token]);
+
+
+
 
     return (
         <>
@@ -39,9 +72,13 @@ function DrawerHeader() {
                 width={280}
             >
                 <div className="flex flex-col gap-4">
-                    <Link href="#" className="text-or neumorphic  p-2 rounded-md dark:text-white hover:text-blue-500 transition-colors cursor-pointer">
-                        پنل ادمین
+                    <Link href="/" className="text-blue-700 neumorphic  p-2 rounded-md dark:text-white hover:text-blue-500 transition-colors cursor-pointer">
+                        صفحه اصلی
                     </Link>
+                    {user == "admin" ? (<Link href="/panelAdmin" className="text-black neumorphic  p-2 rounded-md dark:text-white hover:text-blue-500 transition-colors cursor-pointer">
+                        پنل ادمین
+                    </Link>) : null}
+
                     {/* محصولات */}
                     <details className=' flex flex-col neumorphic p-2 rounded-md' >
                         <summary>محصولات</summary>
@@ -76,7 +113,7 @@ function DrawerHeader() {
                     </details>
                     {/* ثبت نام  / ورود */}
                     <details className=' flex flex-col neumorphic p-2 rounded-md'>
-                        <summary className='text-red-700'>   ثبت نام/ورود</summary>
+                        <summary className='text-green-600'>   ثبت نام/ورود</summary>
                         <div className='flex flex-col mt-[5px]'>
 
                             <Link href="/register" className="bg-or mt-[3px] rounded-md  pr-1 text-xm dark:text-white hover:text-blue-500 transition-colors cursor-pointer">
@@ -88,9 +125,7 @@ function DrawerHeader() {
                         </div>
                     </details>
 
-                    <Link href="#" className="text-white text-center  bg-r  p-2 rounded-md dark:text-white hover:text-blue-500 transition-colors cursor-pointer">
-                        خروج
-                    </Link>
+                    <Logout />
                 </div>
             </Drawer>
         </>
