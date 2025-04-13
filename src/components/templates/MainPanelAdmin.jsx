@@ -13,7 +13,7 @@ function MainPanelAdmin() {
     return (
         <section className=" flex flex-col md:mt-[80px] md:flex-row gap-4 p-4 bg-[var(--background)]">
             {/* منو ادمین */}
-            <aside className="w-full md:w-1/5  p-2 rounded-2xl">
+            <aside className="w-full md:w-1/4  p-2 rounded-2xl">
                 <MenuAdmin />
             </aside>
 

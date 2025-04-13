@@ -36,7 +36,15 @@ const FormCreateProduct = () => {
         const productData = {
             ...data,
             finalPrice: finalPrice || data.price,
+            price: Number(data.price),
+            discount: Number(data.discount) || 0,
+            quantity: Number(data.quantity),
+            sizes: data.sizes.split(",").map((s) => parseInt(s.trim(), 10)),
+            color: data.color.split(",").map((c) => c.trim()),
+            options: Array.isArray(data.options) ? data.options : [data.options],
+
         };
+
 
         setLoading(true);
         try {
@@ -70,23 +78,25 @@ const FormCreateProduct = () => {
         }
     };
     // تبدیل فایل به بیس 64
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const base64 = reader.result;
-                setImagePreview(base64);
-                setValue("image", base64, { shouldValidate: true });
-            };
-            reader.readAsDataURL(file);
-        }
+    const handleImageChange = ({ target: { files } }) => {
+        const file = files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const base64 = reader.result;
+            setImagePreview(base64);
+            setValue("image", base64, { shouldValidate: true });
+        };
+        reader.readAsDataURL(file);
     };
+
 
     return (
         <div className="neumorphics w-full mt-10 max-w-lg mx-auto p-6 rounded-2xl bg-white shadow-lg dark:bg-zinc-900 dark:text-white">
-            <h2 className="text-3xl p-4 neumorphics font-bold mb-8 text-center text-gray-400">فرم ثبت محصول</h2>
+            <h2 className="text-3xl p-4ode  neumorphics font-bold mb-8 text-center text-gray-400">فرم ثبت محصول</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                {/*عنوان  */}
                 <div>
                     <label className=" block text-sm font-medium mb-1 text-or">عنوان</label>
                     <input
@@ -97,7 +107,7 @@ const FormCreateProduct = () => {
                     />
                     {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>}
                 </div>
-
+                {/* توضیحات */}
                 <div>
                     <label className="block text-sm font-medium mb-1 text-or">توضیحات</label>
                     <textarea
@@ -108,7 +118,7 @@ const FormCreateProduct = () => {
                     />
                     {errors.content && <p className="text-red-500 text-sm mt-1">{errors.content.message}</p>}
                 </div>
-
+                {/* دسته بندی */}
                 <div>
                     <label className="block text-sm font-medium mb-1 text-or">دسته‌بندی</label>
                     <select
@@ -116,12 +126,77 @@ const FormCreateProduct = () => {
                         className="neumorphic w-full p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                         <option value="">انتخاب کنید</option>
-                        <option value="men">مردانه</option>
-                        <option value="women">زنانه</option>
+                        <option value="مردانه">مردانه</option>
+                        <option value="زنانه">زنانه</option>
+                        <option value="بچه گانه">بچه گانه</option>
                     </select>
                     {errors.category && <p className="text-red-500 text-sm mt-1">{errors.category.message}</p>}
                 </div>
+                {/* برند */}
 
+                <div>
+                    <label className=" block text-sm font-medium mb-1 text-or">برند</label>
+                    <input
+                        type="text"
+                        {...register("brand", { required: "عنوان الزامی است" })}
+                        className="neumorphic w-full p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="برند محصول"
+                    />
+                    {errors.barnd && <p className="text-red-500 text-sm mt-1">{errors.brand.message}</p>}
+
+                </div>
+                {/* اپشن */}
+                <div>
+                    <label className="block text-sm font-medium mb-1 text-or">نوع کاربرد</label>
+                    <div className="flex flex-wrap gap-3">
+                        {["رانینگ", "کوه‌نوردی", "فوتبال", "والیبال", "بسکتبال",].map((opt) => (
+                            <label key={opt} className="flex items-center space-x-4">
+                                <input
+                                    type="checkbox"
+                                    value={opt}
+                                    {...register("options")}
+                                    className="form-checkbox text-blue-500  rounded-full"
+                                />
+                                <span >{opt}</span>
+                            </label>
+                        ))}
+                    </div>
+                </div>
+
+                {/* سایز */}
+                <div>
+                    <label className=" block text-sm font-medium mb-1 text-or">سایزهای موجود</label>
+                    <input
+                        type="text"
+                        {...register("sizes", {
+                            required: "سایز الزامی است",
+                            validate: (value) =>
+                                value.split(",").map((v) => v.trim()).filter(Boolean).length > 0 ||
+                                "حداقل یک سایز وارد کنید"
+                        })}
+                        className="neumorphic w-full p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="مثلاً: 40, 41, 42"
+                    />
+                    {errors.sizes && <p className="text-red-500 text-sm mt-1">{errors.sizes.message}</p>}
+                </div>
+
+                <div>
+                    <label className=" block text-sm font-medium mb-1 text-or">رنگ‌ها</label>
+                    <input
+                        type="text"
+                        {...register("color", {
+                            required: "رنگ الزامی است",
+                            validate: (value) =>
+                                value.split(",").map((v) => v.trim()).filter(Boolean).length > 0 ||
+                                "حداقل یک رنگ وارد کنید"
+                        })}
+                        className="neumorphic w-full p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="مثلاً: مشکی, قرمز, آبی"
+                    />
+                    {errors.color && <p className="text-red-500 text-sm mt-1">{errors.color.message}</p>}
+                </div>
+
+                {/* تعداد */}
                 <div className="grid grid-cols-2 gap-4">
                     <div>
                         <label className="block text-sm font-medium mb-1 text-or">تعداد</label>
@@ -145,7 +220,7 @@ const FormCreateProduct = () => {
                         {errors.price && <p className="text-red-500 text-sm mt-1">{errors.price.message}</p>}
                     </div>
                 </div>
-
+                {/* درصد تخفیف */}
                 <div>
                     <label className="block text-sm font-medium mb-1 text-or">درصد تخفیف</label>
                     <input
@@ -157,11 +232,11 @@ const FormCreateProduct = () => {
                 </div>
 
                 {finalPrice && (
-                    <div className="text-center text-green-600 font-bold text-lg">
+                    <div className="text-or dark:text-green-400 font-semibold text-center">
                         قیمت نهایی: {finalPrice.toLocaleString()} تومان
                     </div>
                 )}
-
+                {/* اپلود عکس */}
                 <div>
                     <label className="block text-sm font-medium mb-2 text-or">تصویر محصول</label>
 

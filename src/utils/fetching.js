@@ -143,6 +143,7 @@ export async function getAllUsers() {
 
 // فیلد  برای ثبت و حذف و اپدیت محصولات
 export async function createProduct(productData) {
+
     const res = await fetch("http://localhost:3400/product/create", {
         method: "POST",
         headers: {
