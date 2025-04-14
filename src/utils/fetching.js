@@ -156,3 +156,17 @@ export async function createProduct(productData) {
     return { result, ok: res.ok };
 
 }
+export async function getAllProducts() {
+    const res = await fetch("http://localhost:3400/product/getAllProducts", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+
+    });
+    if (!res.ok) {
+        throw new Error("خطا در دریافت محصولات");
+    }
+    const { products } = await res.json();
+    return products
+}

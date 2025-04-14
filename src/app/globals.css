@@ -58,6 +58,18 @@ textarea {
   transition: all 0.3s ease;
 }
 
+.neumorphic-elevated {
+  background-color: #e0dede;
+  /* پس‌زمینه سفید واقعی */
+  border-radius: 12px;
+  box-shadow:
+    8px 8px 16px #9a9da1,
+    /* سایه‌ی پایین/راست */
+    -8px -8px 24px #4b4a4a;
+  /* سایه‌ی بالا/چپ */
+  transition: all 0.3s ease;
+}
+
 .neumorphics {
   background-color: var(--background);
   box-shadow:

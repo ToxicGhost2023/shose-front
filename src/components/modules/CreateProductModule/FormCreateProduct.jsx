@@ -128,7 +128,7 @@ const FormCreateProduct = () => {
                         <option value="">انتخاب کنید</option>
                         <option value="مردانه">مردانه</option>
                         <option value="زنانه">زنانه</option>
-                        <option value="بچه گانه">بچه گانه</option>
+                        <option value="کوهنوردی">کوهنوردی </option>
                     </select>
                     {errors.category && <p className="text-red-500 text-sm mt-1">{errors.category.message}</p>}
                 </div>

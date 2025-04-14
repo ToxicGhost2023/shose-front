@@ -80,18 +80,15 @@ function DrawerHeader({ token }) {
                     </Link>) : null}
 
                     {/* محصولات */}
-                    <details className=' flex flex-col neumorphic p-2 rounded-md' >
-                        <summary>محصولات</summary>
-                        <div className='flex flex-col mt-[5px]'>
 
-                            <Link href="/#" className="bg-or mt-[3px] rounded-md  pr-1 text-xm dark:text-white hover:text-blue-500 transition-colors cursor-pointer">
-                                زنانه
-                            </Link>
-                            <Link href="/#" className="bg-or mt-[3px] rounded-md  pr-1 text-xm dark:text-white hover:text-blue-500 transition-colors cursor-pointer">
-                                مردانه
-                            </Link>
-                        </div>
-                    </details>
+                    <div className='flex flex-col mt-[5px]'>
+
+                        <Link href="/products" className="neumorphic p-2 mt-[3px] rounded-md  pr-1 text-xm dark:text-white hover:text-blue-500 transition-colors cursor-pointer">
+                            محصولات
+                        </Link>
+
+                    </div>
+
                     {/* ارتباط */}
                     <details className=' flex flex-col neumorphic p-2 rounded-md'>
                         <summary>ارتباط</summary>
