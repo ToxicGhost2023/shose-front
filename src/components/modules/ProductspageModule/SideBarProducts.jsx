@@ -43,8 +43,8 @@ function SideBarProducts({ products, setFilteredProducts }) {
     }, [filters, products]);
 
     return (
-        <aside className="w-1/4 neumorphics bg-gray-100 dark:bg-gray-800 p-4 rounded-md">
-            <h2 className="text-lg font-semibold mb-4">دسته‌بندی‌ها</h2>
+        <aside className="w-full sm:w-[200px] max-h-screen overflow-y-auto neumorphics dark:bg-gray-800 p-4 rounded-md mb-4 sm:mb-0">
+            <h2 className="text-lg font-semibold mb-4 text-or">دسته‌بندی‌ها</h2>
             <ul className="space-y-4 text-sm text-gray-800 dark:text-white">
                 {categories.map((cat, index) => (
                     <li key={index}>
@@ -73,6 +73,7 @@ function SideBarProducts({ products, setFilteredProducts }) {
                 ))}
             </ul>
         </aside>
+
     );
 }
 

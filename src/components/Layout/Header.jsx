@@ -1,6 +1,6 @@
 'use client';
 
-import { UserOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { UserOutlined, ShoppingCartOutlined, ShoppingOutlined } from '@ant-design/icons';
 import DarkModeToggle from '../modules/Header/DarkModeButton';
 import DrawerHeader from '../modules/Header/DrawerHeader';
 import Image from 'next/image';
@@ -28,6 +28,9 @@ export default function AppHeader({ token }) {
                     <div className="hidden md:flex gap-4">
                         <Link href="/register">
                             <NeuButton icon={<UserOutlined />} tooltip="ورود / ثبت‌نام" />
+                        </Link>
+                        <Link href="/products">
+                            <NeuButton icon={<ShoppingOutlined />} tooltip=" فروشگاه" />
                         </Link>
                         <Link href="/shoping">
                             <NeuButton icon={<ShoppingCartOutlined />} tooltip="سبد خرید" />

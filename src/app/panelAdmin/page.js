@@ -1,4 +1,4 @@
-import MainPanelAdmin from '@/components/templates/MainPanelAdmin';
+import MainPanelAdmin from '@/components/templates/Admin/MainPanelAdmin';
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 

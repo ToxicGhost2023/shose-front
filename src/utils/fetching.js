@@ -120,7 +120,6 @@ export async function getTotalUsers() {
     const data = await res.json();
     return data
 }
-
 export async function getAllUsers() {
     const res = await fetch("http://localhost:3400/user/all", {
         method: "GET",
@@ -156,6 +155,18 @@ export async function createProduct(productData) {
     return { result, ok: res.ok };
 
 }
+export async function getProduct(id) {
+    const res = await fetch(`http://localhost:3400/product/${id}`, {
+        method: "GET",
+        cache: "no-store",
+    });
+    if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`خطا در بارگذاری محصول: ${res.status} - ${errorText}`);
+    }
+    const { product } = await res.json();
+    return product
+}
 export async function getAllProducts() {
     const res = await fetch("http://localhost:3400/product/getAllProducts", {
         method: "GET",
@@ -169,4 +180,44 @@ export async function getAllProducts() {
     }
     const { products } = await res.json();
     return products
+}
+
+
+// فیلد مخصوص جشواره های تخفیف دارد
+
+export async function ondiscount({ discountPercentage }) {
+    try {
+        const res = await fetch("http://localhost:3400/alldicount/on", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ discountPercentage }),
+        });
+
+        const result = await res.json();
+        return { result, ok: res.ok };
+    } catch (error) {
+        return { result: { message: "خطا در اتصال به سرور" }, ok: false };
+    }
+
+
+}
+export async function offdiscount() {
+    try {
+        const res = await fetch("http://localhost:3400/alldicount/off", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({}),
+        });
+
+        const result = await res.json();
+        return { result, ok: res.ok };
+    } catch (error) {
+        return { result: { message: "خطا در اتصال به سرور" }, ok: false };
+    }
+
+
 }
