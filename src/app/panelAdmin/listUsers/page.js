@@ -3,40 +3,40 @@
 
 import UserSerachBox from '@/components/modules/AdminModules/UserSearchBox';
 import Loader from '@/components/modules/Loader';
+import { fetchUsers } from '@/store/slice/userReducer';
 import { toPersianDate } from '@/utils/Date';
-import { getAllUsers } from '@/utils/fetching';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 
 function ListUsers() {
     const router = useRouter()
-    const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
-    const [error, setError] = useState(null);
     const [loader, setLoader] = useState(false)
 
+    const dispatch = useDispatch()
+    const { users = [], usersStatus, error } = useSelector((state) => state.users)
+    useEffect(() => {
+        if (usersStatus === 'idle') {
+            dispatch(fetchUsers());
+            setFilteredUsers(users);
+        }
+    }, [dispatch, usersStatus]);
 
     useEffect(() => {
-        async function fetchUserData() {
-            try {
-                setLoader(true)
-                const users = await getAllUsers()
-                setUsers(users);
-                setFilteredUsers(users);
-            } catch (err) {
-                setError(err.message);
-            }
+        if (users.length > 0) {
+            setFilteredUsers(users);
         }
+    }, [users]);
 
-        fetchUserData();
-    }, []);
 
     const backHandler = () => {
         router.push("/panelAdmin")
     }
 
-
+    if (usersStatus === 'loading') return <Loader />;
+    if (usersStatus === 'failed') return <p>خطا: {error}</p>;
     return (
         <div className="p-4 sm:p-6 max-w-5xl mx-auto">
             <div className="mb-6 flex flex-wrap items-center justify-between gap-4">

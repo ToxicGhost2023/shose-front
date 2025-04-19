@@ -8,6 +8,8 @@ import {
     FolderAddOutlined,
     MenuFoldOutlined,
     MenuUnfoldOutlined,
+    PayCircleOutlined,
+    ProductOutlined,
     UserSwitchOutlined,
 } from '@ant-design/icons';
 import { Button, Menu } from 'antd';
@@ -21,29 +23,27 @@ const items = [
     },
     {
         key: '2',
-        icon: <DeleteOutlined />,
-        label: <Link href="/panelAdmin/delete">حذف محصول</Link>,
+        icon: <ProductOutlined />,
+        label: <Link href="/panelAdmin/productsList">لیست محصولات من</Link>
     },
+
     {
         key: '3',
-        icon: <EditOutlined />,
-        label: <Link href="/panelAdmin/edit">ویرایش محصول</Link>,
+        icon: <PayCircleOutlined />,
+        label: <Link href="/panelAdmin/Discount"> جشواره تخفیف ها</Link>,
     },
     {
         key: 'sub1',
         label: 'مدیریت',
         icon: <UserSwitchOutlined />,
         children: [
-            { key: '5', label: <Link href="/panelAdmin/option5">Option 5</Link> },
-            { key: '6', label: <Link href="/panelAdmin/option6">Option 6</Link> },
-            { key: '7', label: <Link href="/panelAdmin/option7">Option 7</Link> },
-            { key: '8', label: <Link href="/panelAdmin/option8">Option 8</Link> },
+            { key: '5', label: "ssss" }
         ],
     },
     {
         key: 'sub2',
         label: 'وبلاگ',
-        icon: <FileTextOutlined />,
+        icon: <UserSwitchOutlined />,
         children: [
             { key: '9', label: <Link href="/panelAdmin/blog1">Option 9</Link> },
             { key: '10', label: <Link href="/panelAdmin/blog2">Option 10</Link> },

@@ -24,7 +24,7 @@ function LikeButton({ id }) {
         } catch (error) {
             console.error("خطا در گرفتن لایک‌ها:", error);
         }
-    }, [id]); // اصلاح: استفاده از id به‌جای productId
+    }, [id]); 
 
     useEffect(() => {
         fetchLikes();

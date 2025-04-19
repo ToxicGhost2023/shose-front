@@ -6,43 +6,24 @@ import { MenuOutlined } from '@ant-design/icons';
 import NeuButton from './NeuButton';
 import Link from 'next/link';
 import Logout from '../RegisterModules/Logout';
-import { userDetails } from '@/utils/fetching';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchAuthUser } from '@/store/slice/userReducer';
+
 
 function DrawerHeader({ token }) {
 
-    const [user, setUser] = useState(null);
     const [open, setOpen] = useState(false);
+    const dispatch = useDispatch();
+    const { user, authStatus } = useSelector((state) => state.users);
+
     const showDrawer = () => setOpen(true);
     const onClose = () => setOpen(false);
 
-
-
-
     useEffect(() => {
-        async function fetchUserData() {
-            try {
-                const data = await userDetails({ token });
-
-                if (data) {
-                    setUser(data?.role);
-                } else {
-                    console.error("Data not found or error occurred");
-
-                }
-            } catch (err) {
-                console.error("Error fetching user details:", err);
-            }
-        }
-
         if (token) {
-            fetchUserData();
-        } else {
-            console.error("No token available");
+            dispatch(fetchAuthUser({ token }));
         }
-    }, [token]);
-
-
-
+    }, [token, dispatch]);
 
     return (
         <>
@@ -75,54 +56,43 @@ function DrawerHeader({ token }) {
                     <Link href="/" className="text-blue-700 neumorphic  p-2 rounded-md dark:text-white hover:text-blue-500 transition-colors cursor-pointer">
                         صفحه اصلی
                     </Link>
-                    {user == "admin" ? (<Link href="/panelAdmin" className="text-black neumorphic  p-2 rounded-md dark:text-white hover:text-blue-500 transition-colors cursor-pointer">
-                        پنل ادمین
-                    </Link>) : null}
+
+                    {user?.role === "admin" && (
+                        <Link href="/panelAdmin" className="text-black neumorphic  p-2 rounded-md dark:text-white hover:text-blue-500 transition-colors cursor-pointer">
+                            پنل ادمین
+                        </Link>
+                    )}
 
                     {/* محصولات */}
-
                     <div className='flex flex-col mt-[5px]'>
-
                         <Link href="/products" className="neumorphic p-2 mt-[3px] rounded-md  pr-1 text-xm dark:text-white hover:text-blue-500 transition-colors cursor-pointer">
                             محصولات
                         </Link>
-
                     </div>
 
                     {/* ارتباط */}
                     <details className=' flex flex-col neumorphic p-2 rounded-md'>
                         <summary>ارتباط</summary>
                         <div className='flex flex-col mt-[5px]'>
-
-                            <p className="bg-or mt-[3px] rounded-md  pr-1 text-xm dark:text-white hover:text-blue-500 transition-colors cursor-pointer">
-                                تلفن:0900000000
-                            </p>
-                            <p className="bg-or mt-[3px] rounded-md  pr-1 text-xm dark:text-white hover:text-blue-500 transition-colors cursor-pointer">
-                                :@ffffffffffاینستا گرام
-                            </p>
-                            <p className="bg-or mt-[3px] rounded-md  pr-1 text-xm dark:text-white hover:text-blue-500 transition-colors cursor-pointer">
-                                :0900000000واتس اپ
-                            </p>
-                            <p className="bg-or mt-[3px] rounded-md  pr-1 text-xm dark:text-white hover:text-blue-500 transition-colors cursor-pointer">
-                                :90000000تلگرام
-                            </p>
-                        </div>
-                    </details>
-                    {/* ثبت نام  / ورود */}
-                    <details className=' flex flex-col neumorphic p-2 rounded-md'>
-                        <summary className='text-green-600'>   ثبت نام/ورود</summary>
-                        <div className='flex flex-col mt-[5px]'>
-
-                            <Link href="/register" className="bg-or mt-[3px] rounded-md  pr-1 text-xm dark:text-white hover:text-blue-500 transition-colors cursor-pointer">
-                                ثبت نام
-                            </Link>
-                            <Link href="/register" className="bg-or mt-[3px] rounded-md  pr-1 text-xm dark:text-white hover:text-blue-500 transition-colors cursor-pointer">
-                                ورود
-                            </Link>
+                            <p className="bg-or mt-[3px] rounded-md  pr-1 text-xm dark:text-white">تلفن:0900000000</p>
+                            <p className="bg-or mt-[3px] rounded-md  pr-1 text-xm dark:text-white">@ffffffffffاینستا گرام</p>
+                            <p className="bg-or mt-[3px] rounded-md  pr-1 text-xm dark:text-white">0900000000 واتس اپ</p>
+                            <p className="bg-or mt-[3px] rounded-md  pr-1 text-xm dark:text-white">90000000 تلگرام</p>
                         </div>
                     </details>
 
-                    <Logout />
+                    {/* ثبت نام / ورود */}
+                    {!user && (
+                        <details className=' flex flex-col neumorphic p-2 rounded-md'>
+                            <summary className='text-green-600'>ثبت نام/ورود</summary>
+                            <div className='flex flex-col mt-[5px]'>
+                                <Link href="/register" className="bg-or mt-[3px] rounded-md pr-1 text-xm dark:text-white">ثبت نام</Link>
+                                <Link href="/register" className="bg-or mt-[3px] rounded-md pr-1 text-xm dark:text-white">ورود</Link>
+                            </div>
+                        </details>
+                    )}
+
+                    {user && <Logout />}
                 </div>
             </Drawer>
         </>

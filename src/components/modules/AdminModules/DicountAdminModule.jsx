@@ -1,6 +1,7 @@
 "use client"
 
 import { offdiscount, ondiscount } from "@/utils/fetching";
+import Image from "next/image";
 import { useState } from "react";
 
 function DiscountAdminModule() {
@@ -35,36 +36,41 @@ function DiscountAdminModule() {
     };
 
     return (
-        <div className=" p-4 rounded-2xl ">
-            <h3 className="text-sm font-bold mb-2 text-or">تخفیف جشنواره‌ای</h3>
-            <div className="mb-2">
-                <label className="block text-xs mb-1">درصد تخفیف (%)</label>
-                <input
-                    type="number"
-                    value={discountPercentage}
-                    onChange={(e) => setDiscountPercentage(e.target.value)}
-                    className="w-full p-1 text-sm border rounded"
-                    placeholder="مثال: 50"
-                    min="0"
-                    max="100"
-                />
+        <div className="relative p-12 rounded-2xl w-1/2 border border-or items-center ">
+            <div className="relative z-10 text-white">
+                <h3 className="text-lg font-bold mb-2 text-orange-400">🎉 تخفیف جشنواره‌ای</h3>
+
+                <div className="mb-2">
+                    <label className="block text-xs mb-1">درصد تخفیف (%)</label>
+                    <input
+                        type="number"
+                        value={discountPercentage}
+                        onChange={(e) => setDiscountPercentage(e.target.value)}
+                        className="w-full p-1 text-sm border rounded"
+                        placeholder="مثال: 50"
+                        min="0"
+                        max="100"
+                    />
+                </div>
+
+                <div className="flex gap-2">
+                    <button
+                        onClick={handleApplyDiscount}
+                        className="bg-blue-600 text-white text-xl px-3 py-1 rounded hover:bg-blue-700"
+                        disabled={!discountPercentage || discountPercentage <= 0}
+                    >
+                        اعمال تخفیف
+                    </button>
+                    <button
+                        onClick={handleDeactivateDiscount}
+                        className="bg-red-600 text-white text-xl px-3 py-1 rounded hover:bg-red-700"
+                    >
+                        غیرفعال کردن
+                    </button>
+                </div>
+
+                {message && <p className="mt-8 text-xl text-orange-300">{message}</p>}
             </div>
-            <div className="flex gap-2">
-                <button
-                    onClick={handleApplyDiscount}
-                    className="bg-blue-600 text-white text-xl  px-3 py-1 rounded hover:bg-blue-700"
-                    disabled={!discountPercentage || discountPercentage <= 0}
-                >
-                    اعمال تخفیف
-                </button>
-                <button
-                    onClick={handleDeactivateDiscount}
-                    className="bg-red-600 text-white text-xl px-3 py-1 rounded hover:bg-red-700"
-                >
-                    غیرفعال کردن
-                </button>
-            </div>
-            {message && <p className="mt-8 text-xl text-or">{message}</p>}
         </div>
     );
 };

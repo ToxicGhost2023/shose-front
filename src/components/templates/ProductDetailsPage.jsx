@@ -1,10 +1,14 @@
 
+
 import ProductDetailsModule from '../modules/ProductspageModule/ProductDetailsModule'
 
-function ProductDetailsPage({ product, id }) {
+function ProductDetailsPage({ id }) {
+ 
+
+
     return (
         <div>
-            <ProductDetailsModule id={id} product={product} />
+            <ProductDetailsModule id={id}  />
         </div>
     )
 }
