@@ -11,6 +11,17 @@ export const fetchUsers = createAsyncThunk('users/fetch', async (_, thunkAPI) =>
     }
 
 });
+// تعداد یوزر ها
+export const fetchUsersCount = createAsyncThunk('usersCount/fetch', async (_, thunkAPI) => {
+    try {
+        const response = await fetch('http://localhost:3400/user/count');
+        const data = await response.json();
+        return data.count;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.message);
+    }
+
+});
 // سکیور کردن
 export const fetchAuthUser = createAsyncThunk(
     "authUser/fetch",
@@ -39,6 +50,7 @@ const initialState = {
     users: [],
     totalUsers: 0,
     usersStatus: 'idle',
+    usersCountStatus: 'idle',
     user: null,
     authStatus: 'idle',
     error: null,
@@ -87,6 +99,20 @@ const userSlice = createSlice({
             })
             .addCase(fetchAuthUser.rejected, (state, action) => {
                 state.authStatus = 'failed';
+                state.error = action.payload;
+            })
+            // تعداد یوزر ها
+
+            .addCase(fetchUsersCount.pending, (state) => {
+                state.usersCountStatus = 'loading';
+                state.error = null;
+            })
+            .addCase(fetchUsersCount.fulfilled, (state, action) => {
+                state.usersCountStatus = 'succeeded';
+                state.totalUsers = action.payload;
+            })
+            .addCase(fetchUsersCount.rejected, (state, action) => {
+                state.usersCountStatus = 'failed';
                 state.error = action.payload;
             })
 

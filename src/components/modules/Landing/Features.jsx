@@ -40,11 +40,14 @@ function Features() {
                 {/* لینک فروشگاه پایین سه تا باکس */}
                 <nav className="flex justify-center">
                     <Link
-                        href="#"
+                        href="/products"
                         className="neumorphic w-[220px] text-center relative z-10 text-sm rounded-full overflow-hidden group hover:text-white transition duration-300"
                     >
                         <span className="relative z-10 flex justify-center items-center gap-2 py-2">
+
                             <span className="dark:text-or">برو به فروشگاه</span>
+
+
                             <ArrowRightOutlined className="transition-transform duration-300 group-hover:translate-x-1" />
                         </span>
                         <span className="absolute inset-0 bg-emerald-500 rounded-full scale-0 group-hover:scale-100 transition-transform duration-500 ease-in-out z-0"></span>

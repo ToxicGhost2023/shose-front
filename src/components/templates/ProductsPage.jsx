@@ -1,51 +1,52 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from 'react'
-import ProductSearchBox from '../modules/ProductspageModule/ProductSearchBox'
-import SideBarProducts from '../modules/ProductspageModule/SideBarProducts'
-import Loader from '../modules/Loader';
+import { useEffect, useMemo, useState } from "react";
+import ProductSearchBox from "../modules/ProductspageModule/ProductSearchBox";
+import SideBarProducts from "../modules/ProductspageModule/SideBarProducts";
+import Loader from "../modules/Loader";
+import ProductCard from "../modules/ProductspageModule/ProductCard";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts } from "@/store/slice/productsReducer";
 
-import { getAllProducts } from '@/utils/fetching';
-import ProductCard from '../modules/ProductspageModule/ProductCard';
 
 function ProductsPage() {
-
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const dispatch = useDispatch();
+    const { products, status, error } = useSelector((state) => state.products);
     const [filteredProducts, setFilteredProducts] = useState([]);
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setLoading(true);
-                const myproducts = await getAllProducts();
+        if (status === 'idle') {
+            dispatch(fetchProducts());
+        }
+    }, [dispatch, status]);
 
-                const updatedProducts = myproducts.map((product) => ({
-                    ...product,
-                    image: product.image.startsWith("http")
-                        ? product.image
-                        : `http://localhost:3400${product.image}`,
-                }));
-                setLoading(false)
-                setProducts(updatedProducts || []);
-                setFilteredProducts(updatedProducts || []);
-            } catch (err) {
-                setError(err.message);
-            }
-        };
+    useEffect(() => {
+        setFilteredProducts(products);
+    }, [products]);;
+    const updatedProducts = useMemo(() => {
+        return filteredProducts.map(product => ({
+            ...product,
+            image: product.image.startsWith('data:image') || product.image.startsWith('http')
+                ? product.image
+                : `http://localhost:3400${product.image}`,
 
-        fetchData();
-    }, []);
+        }));
+    }, [filteredProducts]);
 
+    if (status === 'loading') return <p>در حال بارگذاری محصولات...</p>;
+    if (status === 'failed') return <p>خطا: {error}</p>;
 
     return (
         <>
-            {loading ? (
+            {status === "loading" ? (
                 <div className="flex items-center justify-center min-h-screen w-full">
                     <Loader />
                 </div>
+            ) : status === "failed" ? (
+                <div className="flex items-center justify-center min-h-screen w-full">
+                    <p className="text-red-500">{error || "خطایی در بارگذاری محصولات رخ داد"}</p>
+                </div>
             ) : (
                 <div className="p-4">
-                    {/* باکس جستجو */}
                     <div className="mb-4">
                         <ProductSearchBox
                             products={products}
@@ -54,19 +55,17 @@ function ProductsPage() {
                     </div>
 
                     <div className="flex flex-col lg:flex-row">
-                        {/* سایدبار - ریسپانسیو */}
-                        <aside className="w-full lg:w-[250px] lg:fixed  lg:overflow-y-auto dark:bg-gray-800 p-4 rounded-md  mb-4 lg:mb-0">
+                        <aside className="w-full lg:w-[250px] lg:fixed lg:overflow-y-auto dark:bg-gray-800 p-4 rounded-md mb-4 lg:mb-0">
                             <SideBarProducts
                                 products={products}
                                 setFilteredProducts={setFilteredProducts}
                             />
                         </aside>
-
-                        {/* محتوای اصلی */}
                         <main className="flex-1 lg:mr-[260px] mt-4 lg:mt-0">
                             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                                {filteredProducts.length > 0 ? (
-                                    filteredProducts.map((product) => (
+                                {updatedProducts.length > 0 ? (
+                                    updatedProducts.map((product) => (
+
                                         <ProductCard key={product._id} product={product} />
                                     ))
                                 ) : (
@@ -80,11 +79,7 @@ function ProductsPage() {
                 </div>
             )}
         </>
-
-
-
-
-    )
+    );
 }
 
-export default ProductsPage
+export default ProductsPage;

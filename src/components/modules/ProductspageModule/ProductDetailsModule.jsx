@@ -6,8 +6,10 @@ import LikeButton from "./LikeButton";
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchSingleProduct } from "@/store/slice/productsReducer";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 function ProductDetailsModule({ id }) {
+    const router = useRouter()
     const dispatch = useDispatch()
     const { singleProduct, status, error } = useSelector(state => state.products)
     useEffect(() => {
@@ -15,17 +17,25 @@ function ProductDetailsModule({ id }) {
     }, [id, dispatch]);
 
 
+
+
+
+
+
     if (status === "loading") return <p>در حال بارگذاری...</p>;
     if (status === "failed") return <p>خطا: {error}</p>;
     if (!singleProduct) return <p>محصولی پیدا نشد.</p>;
+
 
 
     const updatedProduct = {
         ...singleProduct,
         image: singleProduct.image.startsWith('http')
             ? singleProduct.image
-            : `http://localhost:3400${singleProduct.image}`,
+            : `http://localhost:3400${singleProduct.image.startsWith('/uploads/') ? singleProduct.image : `/uploads/${singleProduct.image}`}`,
     };
+
+
 
 
 
@@ -44,12 +54,15 @@ function ProductDetailsModule({ id }) {
                         <div className="relative w-full h-60 sm:h-80 md:h-96 lg:h-[32rem] overflow-hidden rounded-2xl  group">
 
                             <Image
-                                src={updatedProduct.image.startsWith("http") ? updatedProduct.image : `http://localhost:3400/uploads/${updatedProduct.image}`}
+                                src={updatedProduct.image.startsWith('http') ? updatedProduct.image : `http://localhost:3400/uploads/${updatedProduct.image}`}
                                 alt={updatedProduct.title}
                                 fill
                                 className="object-cover transition-transform duration-700 group-hover:scale-115 dark:bg-black"
                                 sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, (max-width: 1024px) 50vw, 40vw"
-                                priority
+                                onError={(e) => {
+                                    console.error('تصویر بارگذاری نشد:', updatedProduct.image);
+                                    e.target.src = '/fallback-image.png'; // تصویر پیش‌فرض
+                                }}
                             />
 
                             <div className="absolute  inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
@@ -89,7 +102,7 @@ function ProductDetailsModule({ id }) {
                             </p>
                             {updatedProduct.discount > 0 && updatedProduct.finalPrice && (
                                 <p className="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-500 bg-clip-text text-transparent animate-pulse">
-                                    قیمت با تخفیف: {finalPrice.toLocaleString()} تومان
+                                    قیمت با تخفیف: {updatedProduct.finalPrice?.toLocaleString()} تومان
                                 </p>
                             )}
                         </div>
@@ -114,7 +127,7 @@ function ProductDetailsModule({ id }) {
                                 <div className="absolute inset-0 ring-2 ring-indigo-400/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full"></div>
                             </Link>
                             <button
-                                onClick={() => window.history.back()}
+                                onClick={() => router.push("/products")}
                                 className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium text-sm sm:text-base py-2.5 sm:py-3 text-center transition-colors duration-300 relative group"
                             >
                                 بازگشت به لیست

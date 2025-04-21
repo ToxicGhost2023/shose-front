@@ -1,7 +1,6 @@
 
 
 import CheckOrderAdmin from "@/components/modules/AdminModules/CheckOrderAdmin";
-import DiscountAdminModule from "@/components/modules/AdminModules/DicountAdminModule";
 import MenuAdmin from "@/components/modules/AdminModules/MenuAdmin";
 import MoneyStatus from "@/components/modules/AdminModules/MoneyStatus";
 import TotalUsers from "@/components/modules/AdminModules/TotalUsers";

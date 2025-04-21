@@ -8,7 +8,6 @@ const nextConfig = {
                 port: "3400",
                 pathname: "/uploads/**",
             },
-
         ],
     },
 };

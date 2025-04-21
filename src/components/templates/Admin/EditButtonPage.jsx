@@ -1,35 +1,44 @@
+"use client"
+
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 import EditFormModule from '@/components/modules/AdminModules/EditFormModule';
-import { getProduct, updatedProducts } from '@/utils/fetching';
-import { redirect } from 'next/navigation';
+import { fetchSingleProduct, updateProduct } from '@/store/slice/productsReducer';
 
+function EditButtonPage({ id }) {
+    const dispatch = useDispatch();
+    const { singleProduct, singleProductStatus } = useSelector((state) => state.products);
 
-async function EditButtonPage({ id }) {
-    const product = await getProduct(id);
-    if (!product) {
-        return <div>محصول یافت نشد!</div>;
-    }
-    async function handleSave(updatedProduct) {
-        "use server";
-        try {
-            await updatedProducts(id, updatedProduct);
-            return { success: true }; // پاسخ به کلاینت
-        } catch (error) {
-            console.error("خطا در ذخیره محصول:", error);
-            throw new Error(error.message || "خطا در ذخیره تغییرات!");
+    useEffect(() => {
+        if (id) {
+            dispatch(fetchSingleProduct(id));
         }
+    }, [dispatch, id]);
+
+    const handleSave = async (updatedData) => {
+        const resultAction = await dispatch(updateProduct({ id, updatedProduct: updatedData })).unwrap();
+        if (updateProduct.fulfilled.match(resultAction)) {
+            return { success: true };
+        } else {
+            throw new Error("خطا در بروزرسانی محصول");
+        }
+    };
+
+
+    if (singleProductStatus === 'loading') {
+        return <div>در حال بارگذاری...</div>;
+    }
+
+    if (!singleProduct) {
+        return <div>محصولی یافت نشد</div>;
     }
 
     return (
-        <div className="min-h-screen  flex flex-col mt-[50px] items-center justify-center p-4">
-
-            <h1 className="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-100">
-                {product.title}
-            </h1>
-
-            <EditFormModule product={product} onSave={handleSave} />
-
+        <div className="min-h-screen flex flex-col mt-[50px] items-center justify-center p-4">
+            <EditFormModule product={singleProduct} onSave={handleSave} />
         </div>
-    )
+    );
 }
 
-export default EditButtonPage
+export default EditButtonPage;

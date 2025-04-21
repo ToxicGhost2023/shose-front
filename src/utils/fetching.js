@@ -1,5 +1,4 @@
 
-
 // درخواست های مربوط به ثبت نام و ورود و خروج---------------------------
 export async function fetchRegister(data) {
     try {
@@ -71,53 +70,13 @@ export async function fetchLogOut() {
     }
 }
 
-// درخاوست های برای یوزرــــــــــــــــ
-
-//  فیلد مربوط به کاربرانــــــــــــــــــــــــــــــــــ
-export async function getTotalUsers() {
-
-    const res = await fetch("http://localhost:3400/user/count", {
-        method: "GET",
-        credentials: "include",
-        mode: "cors",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    });
-    if (!res.ok) {
-        throw new Error(
-            data.error || "مشکلی در دریافت اطلاعات کاربر وجود دارد"
-        );
-    }
-
-    const data = await res.json();
-    return data
-}
-
-//     const res = await fetch("http://localhost:3400/user/all", {
-//         method: "GET",
-//         credentials: "include",
-//         mode: "cors",
-//         headers: {
-//             "Content-Type": "application/json",
-//         },
-//     });
-//     if (!res.ok) {
-//         throw new Error(
-//             data.error || "مشکلی در دریافت اطلاعات کاربران وجود دارد"
-//         );
-//     }
-//     const { users } = await res.json();
-//     return users
-
-// }
-
 
 // فیلد  برای ثبت و حذف و اپدیت محصولات
 export async function createProduct(productData) {
 
     const res = await fetch("http://localhost:3400/product/create", {
         method: "POST",
+        cache: 'no-store',
         headers: {
             "Content-Type": "application/json",
         },
@@ -128,54 +87,6 @@ export async function createProduct(productData) {
     return { result, ok: res.ok };
 
 }
-export async function getProduct(id) {
-
-    const res = await fetch(`http://localhost:3400/product/${id}`, {
-        method: "GET",
-        cache: "no-store",
-    });
-    if (!res.ok) {
-        const errorText = await res.text();
-        throw new Error(`خطا در بارگذاری محصول: ${res.status} - ${errorText}`);
-    }
-    const { product } = await res.json();
-    return product
-}
-export async function getAllProducts() {
-    const res = await fetch("http://localhost:3400/product/getAllProducts", {
-        method: "GET",
-        cache: "no-store",
-        headers: {
-            "Content-Type": "application/json",
-        },
-
-    });
-    if (!res.ok) {
-        throw new Error("خطا در دریافت محصولات");
-    }
-    const { products } = await res.json();
-    return products
-}
-export async function updatedProducts(id, updatedProduct) {
-    try {
-        const saveRes = await fetch(`http://localhost:3400/product/updateProduct/${id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(updatedProduct),
-        });
-
-        if (saveRes.ok) {
-            return await saveRes.json();
-        } else {
-            const errorData = await saveRes.json();
-            throw new Error(errorData.message || "خطا در ذخیره تغییرات!");
-        }
-    } catch (error) {
-        console.error("خطا در به‌روزرسانی محصول:", error);
-        throw error;
-    }
-}
-
 export async function deleteProduct(id) {
     try {
         const res = await fetch(`http://localhost:3400/product/delete/${id}`, {

@@ -6,17 +6,17 @@ import { DownOutlined } from "@ant-design/icons";
 function SideBarProducts({ products, setFilteredProducts }) {
     const [filters, setFilters] = useState({});
 
-    const categories = [...new Set(products.map(p => p.category))];
-
+    // دریافت دسته‌بندی‌ها و زیرشاخه‌ها
+    const categories = [...new Set((Array.isArray(products) ? products : []).map(p => p.category))];
     const subcategories = categories.reduce((acc, cat) => {
         const subs = products
             .filter(p => p.category === cat)
-            .flatMap(p => p.options);
+            .flatMap(p => p.options || []); // اطمینان از معتبر بودن options
         acc[cat] = [...new Set(subs)];
         return acc;
     }, {});
 
-    // تغییر انتخاب فقط یکی در هر کتگوری
+    // مدیریت انتخاب زیرشاخه
     const handleSelectOption = (category, selectedOption) => {
         setFilters(prev => ({
             ...prev,
@@ -36,7 +36,7 @@ function SideBarProducts({ products, setFilteredProducts }) {
         const filtered = products.filter(product => {
             const selected = filters[product.category];
             if (!selected) return false;
-            return product.options.includes(selected);
+            return Array.isArray(product.options) && product.options.includes(selected);
         });
 
         setFilteredProducts(filtered);
@@ -73,7 +73,6 @@ function SideBarProducts({ products, setFilteredProducts }) {
                 ))}
             </ul>
         </aside>
-
     );
 }
 
