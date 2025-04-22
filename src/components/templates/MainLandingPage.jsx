@@ -8,6 +8,9 @@ import Loader from "../modules/Loader";
 import SliderProductsWomen from "../modules/Landing/SliderProductsWomen";
 import SliderProductsMen from "../modules/Landing/SliderProductsMen";
 import Baner2Module from "../modules/Landing/Baner2Module";
+import CollapsePage from "../modules/Landing/CollapsModule";
+import QR from "../modules/Landing/QR";
+import Comment from "../modules/Landing/Comment";
 
 function MainLandingPage() {
     const [loading, setLoading] = useState(true)
@@ -26,8 +29,8 @@ function MainLandingPage() {
                     <Features />
                     <ScrollButton />
                     <div className="mt-[50px]">
-                        <h2 className="text-lg font-semibold text-or">کفش زنانه</h2>
                         <SliderProductsWomen />
+
                     </div>
                     <div className="mt-[50px]">
                         <Baner2Module />
@@ -36,6 +39,18 @@ function MainLandingPage() {
                     <div className="mt-[50px]">
                         <h2 className="text-lg font-semibold text-or">کفش مردانه</h2>
                         <SliderProductsMen />
+                    </div>
+                    <div className="mt-[300px]">
+
+                        <CollapsePage />
+                    </div>
+
+                    <div className="mt-[50px]">
+                        <QR />
+                    </div>
+
+                    <div className="mt-[150px]">
+                        <Comment />
                     </div>
 
                 </section>
