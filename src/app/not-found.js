@@ -4,11 +4,11 @@ import Image from "next/image";
 const NotFound = () => {
     return (
         <section className="flex items-center justify-center min-h-screen px-4 sm:px-6">
-            <div className="text-center p-6 sm:p-8 rounded-3xl w-full md:w-[1500px] max-w-[100%] sm:max-w-lg  shadow-inner transition-all duration-500">
+            <div className="text-center p-6 sm:p-8 rounded-3xl w-full md:w-[1500px] max-w-[100%] sm:max-w-lg   transition-all duration-500">
 
-                <div className="w-[220px] h-[220px] sm:w-[280px] sm:h-[280px] mx-auto mb-4 rounded-full overflow-hidden bg-white flex items-center justify-center shadow-lg animate-fade-in">
+                <div className="w-[320px] h-[320px] sm:w-[280px] sm:h-[280px] mx-auto mb-4 rounded-lg overflow-hidden  flex items-center justify-center  animate-fade-in">
                     <Image
-                        src="/images/shose.png"
+                        src="/images/404.png"
                         width={280}
                         height={280}
                         alt="Shoe Not Found"

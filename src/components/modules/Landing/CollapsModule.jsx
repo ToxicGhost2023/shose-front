@@ -88,9 +88,9 @@ const ContactPage = () => {
                 {/* تصویر */}
                 <div className="w-full lg:w-1/2">
                     <Image
-                        width={400}
-                        height={400}
-                        src="/images/comitation.png"
+                        width={800}
+                        height={600}
+                        src="/images/comitation2.png"
                         alt="comitation"
                         className="w-full h-auto rounded-lg object-cover"
                         priority
