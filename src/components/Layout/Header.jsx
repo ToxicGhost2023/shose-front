@@ -14,7 +14,7 @@ export default function AppHeader({ token }) {
 
     return (
         <header
-            className="w-full  text-gray-800 dark:text-white rounded-2xl p-2 sm:p-4
+            className="w-full md:w-full  text-gray-800 dark:text-white rounded-2xl p-2 sm:p-4
         flex  sm:flex-row items-center justify-between gap-2 sm:gap-4"
         >
 

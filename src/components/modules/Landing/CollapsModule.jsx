@@ -9,12 +9,12 @@ const contactItems = [
         label: (
             <div className="flex items-center space-x-2">
                 <EnvironmentOutlined className="text-blue-500 text-xl" />
-                <span className="text-lg font-semibold">آدرس دفتر</span>
+                <span className="text-lg font-semibold dark:text-or">آدرس دفتر</span>
             </div>
         ),
         children: (
             <div className="space-y-4">
-                <p className="text-gray-700 text-base md:text-lg">تهران، خیابان آزادی، پلاک ۱۲۳، کد پستی: ۱۲۳۴۵</p>
+                <p className="text-gray-700 text-base md:text-lg dark:text-orange-300">تهران، خیابان آزادی، پلاک ۱۲۳، کد پستی: ۱۲۳۴۵</p>
                 <a
                     href="https://maps.google.com"
                     target="_blank"
@@ -34,18 +34,18 @@ const contactItems = [
         label: (
             <div className="flex items-center space-x-2">
                 <PhoneOutlined className="text-blue-500 text-xl" />
-                <span className="text-lg font-semibold">شماره‌های تماس</span>
+                <span className="text-lg font-semibold dark:text-or">شماره‌های تماس</span>
             </div>
         ),
         children: (
             <div className="space-y-4">
                 <p className="text-gray-700 flex items-center text-base md:text-lg">
                     <MobileOutlined className="ml-2 text-gray-500" />
-                    موبایل: <a href="tel:+989123456789" className="mr-2 text-blue-500 hover:text-blue-700">۰۹۱۲-۳۴۵-۶۷۸۹</a>
+                    موبایل: <a href="tel:+989123456789" className="mr-2 dark:text-or text-blue-500 hover:text-blue-700">۰۹۱۲-۳۴۵-۶۷۸۹</a>
                 </p>
                 <p className="text-gray-700 flex items-center text-base md:text-lg">
                     <PhoneOutlined className="ml-2 text-gray-500" />
-                    ثابت: <a href="tel:+982112345678" className="mr-2 text-blue-500 hover:text-blue-700">۰۲۱-۱۲۳۴-۵۶۷۸</a>
+                    ثابت: <a href="tel:+982112345678" className="mr-2 dark:text-or text-blue-500 hover:text-blue-700">۰۲۱-۱۲۳۴-۵۶۷۸</a>
                 </p>
             </div>
         ),
@@ -55,7 +55,7 @@ const contactItems = [
         label: (
             <div className="flex items-center space-x-2">
                 <WhatsAppOutlined className="text-blue-500 text-xl" />
-                <span className="text-lg font-semibold">شبکه‌های اجتماعی</span>
+                <span className="text-lg font-semibold dark:text-or">شبکه‌های اجتماعی</span>
             </div>
         ),
         children: (
@@ -107,7 +107,7 @@ const ContactPage = () => {
                         expandIconPosition="end"
                         ghost
                         accordion
-                        className="space-y-4"
+                        className="space-y-4 "
                         bordered={false}
                     >
                         {contactItems.map((item) => (

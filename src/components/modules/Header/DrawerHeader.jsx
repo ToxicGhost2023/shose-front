@@ -28,14 +28,14 @@ function DrawerHeader({ token }) {
     return (
         <>
             <NeuButton
-                icon={<MenuOutlined style={{ fontSize: '18px' }} />}
+                icon={<MenuOutlined style={{ fontSize: '22px', fontWeight: "bold", color: "orange" }} />}
                 onClick={showDrawer}
                 tooltip="منو"
                 className="md:hidden"
             />
 
             <Drawer
-                title={<span className="font-bold text-lg">منوی سایت</span>}
+                title={<span className="font-bold text-3xl">shover👣</span>}
                 placement="right"
                 onClose={onClose}
                 open={open}
@@ -80,9 +80,9 @@ function DrawerHeader({ token }) {
                             <p className="bg-or mt-[3px] rounded-md  pr-1 text-xm dark:text-white">90000000 تلگرام</p>
                         </div>
                     </details>
-
+                  
                     {/* ثبت نام / ورود */}
-                    {!user && (
+
                         <details className=' flex flex-col neumorphic p-2 rounded-md'>
                             <summary className='text-green-600'>ثبت نام/ورود</summary>
                             <div className='flex flex-col mt-[5px]'>
@@ -90,7 +90,7 @@ function DrawerHeader({ token }) {
                                 <Link href="/register" className="bg-or mt-[3px] rounded-md pr-1 text-xm dark:text-white">ورود</Link>
                             </div>
                         </details>
-                    )}
+
 
                     {user && <Logout />}
                 </div>

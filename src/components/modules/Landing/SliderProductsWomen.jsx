@@ -46,12 +46,12 @@ function SliderProductsWomen() {
     }, [products]);
 
     return (
-        <>
+        <div className='md:min-h-[100vh]'>
             <section className="py-8 px-4 sm:px-4 lg:px-8 ">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-or mb-8">  پرفروش ترین ها</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
                     {brands.map((brand, index) => (
-                        <div key={index} className="flex flex-col items-center p-3 neumorphic hover:border-or hover:border rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
+                        <div key={index} className="flex flex-col items-center p-3 neumorphic hover:border-or hover:text-or hover:border rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
                             <Image
                                 src={brand.src}
                                 alt={brand.name}
@@ -59,7 +59,7 @@ function SliderProductsWomen() {
                                 height={100}
                                 className="rounded-full mb-2 object-cover w-1/4"
                             />
-                            <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-800 text-center">{brand.name}</h3>
+                            <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-800 dark:text-or text-center">{brand.name}</h3>
                         </div>
                     ))}
                 </div>
@@ -88,7 +88,7 @@ function SliderProductsWomen() {
                         </div>
                     ))}
             </Carousel>
-        </>
+        </div>
     );
 }
 

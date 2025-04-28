@@ -19,19 +19,48 @@ function Signup() {
 
 
     const onSubmit = async (data) => {
-        const { data: result, error } = await fetchRegister(data);
+        const { data: result, error, status } = await fetchRegister(data);
 
-        if (error) {
-            alert(error);
-            return;
+
+        if (result.status === 403) {
+            const swalResult = await Swal.fire({ 
+                title: "خطا",
+                text: "شماره موبایل قبلاً ثبت شده است",
+                icon: "error",
+                confirmButtonText: "برو به صفحه ورود",
+                showCancelButton: true,
+                cancelButtonText: "تلاش دوباره",
+            });
+           
+            return; 
         }
-        const code = result?.otp?.code;
 
+        // بررسی خطای کلی
+        if (error || !result) {
+            Swal.fire({
+                title: "خطا",
+                text: "مشکلی در ارتباط با سرور رخ داد",
+                icon: "error",
+            });
+            return; // جلوگیری از ادامه اجرا
+        }
+
+        // بررسی دریافت OTP
+        if (!result?.otp) {
+            Swal.fire({
+                title: "خطا",
+                text: "کد OTP از سرور دریافت نشد",
+                icon: "error",
+            });
+            return; // جلوگیری از ادامه اجرا
+        }
+
+        const code = result.otp;
         setIsOtpSent(true);
 
         Swal.fire({
-            title: "کد یبار مصرف",
-            text: code, // نمایش کد
+            title: "کد یک‌بار مصرف",
+            text: code,
             icon: "info",
             showCancelButton: true,
             confirmButtonText: "کپی کد",
@@ -48,7 +77,6 @@ function Signup() {
                 });
             },
         });
-
     };
 
     const otpHandler = async () => {

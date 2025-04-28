@@ -24,7 +24,7 @@ function SearchBox() {
                 <input
                     placeholder="جستجو..."
                     type="text"
-                    className="outline-none text-base sm:text-lg md:text-[20px] bg-transparent w-full text-[var(--text)] font-normal px-4"
+                    className="outline-none text-base sm:text-lg md:text-[20px] bg-transparent w-full text-[var(--text)] font-normal px-4 dark:text-red-700"
                 />
             </div>
         </div>

@@ -1,113 +1,90 @@
-import React, { useState } from 'react';
-import { Input, Avatar } from 'antd';
-import { HeartOutlined, HeartFilled } from '@ant-design/icons';
+"use client"
 
-const initialComments = [
-    {
-        id: 1,
-        username: 'user1',
-        avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
-        text: 'عالی بود! خیلی خوشم اومد 😍',
-        timestamp: '2 ساعت پیش',
-        likes: 12,
-        liked: false,
-    },
-    {
-        id: 2,
-        username: 'user2',
-        avatar: 'https://randomuser.me/api/portraits/women/2.jpg',
-        text: 'کیفیتش حرف نداره، حتما پیشنهاد می‌کنم!',
-        timestamp: '1 ساعت پیش',
-        likes: 8,
-        liked: false,
-    },
-];
 
-const Comment = () => {
-    const [comments, setComments] = useState(initialComments);
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Input, Spin } from 'antd';
+import { createNewComment, fetchComments } from '@/store/slice/commentsSlice';
+import { jwtDecode } from "jwt-decode";
+import { useRouter } from 'next/navigation';
+
+const Comment = ({ token }) => {
+
+    const router = useRouter()
+    const dispatch = useDispatch();
+    const [userId, setUserId] = useState(null);
+    const { comments, loading, error } = useSelector((state) => state.comments);
     const [newComment, setNewComment] = useState('');
 
-    // اضافه کردن نظر جدید
-    const handleAddComment = () => {
-        if (newComment.trim()) {
-            const newCommentObj = {
-                id: comments.length + 1,
-                username: 'شما', // فرضاً کاربر فعلی
-                avatar: 'https://randomuser.me/api/portraits/men/3.jpg', // آواتار پیش‌فرض
-                text: newComment,
-                timestamp: 'اکنون',
-                likes: 0,
-                liked: false,
-            };
-            setComments([...comments, newCommentObj]);
-            setNewComment('');
+    useEffect(() => {
+        if (!token) {
+            router.push("/register");
+            return;
+        }
+        const decoded = jwtDecode(token);
+        if (!decoded?.userId) {
+            router.push("/register");
+        } else {
+            setUserId(decoded.userId);
+        }
+    }, [token, router]);;
+
+    useEffect(() => {
+        dispatch(fetchComments());
+    }, [dispatch]);
+
+    const handleAddComment = async () => {
+        if (newComment.trim() && userId) {
+            try {
+                const result = await dispatch(createNewComment({
+                    userId,
+                    comment: newComment,
+                }));
+                if (result.meta.requestStatus === 'fulfilled') {
+                    dispatch(fetchComments());
+                    setNewComment('');
+                } else {
+                    console.error("Error in dispatch:", result.error);
+                }
+            } catch (error) {
+                console.error("Error dispatching comment:", error);
+            }
+        } else {
+            console.log("Missing comment or userId");
         }
     };
 
-    // لایک کردن نظر
-    const handleLike = (id) => {
-        setComments(
-            comments.map((comment) =>
-                comment.id === id
-                    ? {
-                        ...comment,
-                        liked: !comment.liked,
-                        likes: comment.liked ? comment.likes - 1 : comment.likes + 1,
-                    }
-                    : comment
-            )
-        );
-    };
 
     return (
-        <div className="min-h-screen  py-6 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
-            <div className="w-full max-w-2xl  rounded-lg shadow-md p-6">
-                {/* هدر: تعداد نظرات */}
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4">
-                    نظرات ({comments.length})
+        <div className="min-h-screen py-6 px-4 sm:px-6 lg:px-8 flex items-center justify-center ">
+            <div className="w-full max-w-2xl rounded-lg shadow-md p-6 border border-white">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-or mb-4">
+                    نظرات ({comments ? comments.length : 0})
                 </h2>
 
-                {/* لیست نظرات */}
-                <div className="space-y-4 mb-6 max-h-96 overflow-y-auto">
-                    {comments.map((comment) => (
-                        <div key={comment.id} className="flex items-start space-x-3">
-                            {/* آواتار */}
-                            <Avatar src={comment.avatar} size={40} className="flex-shrink-0" />
-
-                            {/* محتوا */}
-                            <div className="flex-1">
-                                <div className="flex items-center justify-between">
-                                    <span className="text-sm sm:text-base font-semibold text-gray-800">
-                                        {comment.username}
-                                    </span>
-                                    <span className="text-xs text-gray-500">{comment.timestamp}</span>
-                                </div>
-                                <p className="text-sm sm:text-base text-gray-700 mt-1">{comment.text}</p>
-                                <div className="flex items-center space-x-2 mt-2">
-                                    <button
-                                        onClick={() => handleLike(comment.id)}
-                                        className="text-gray-500 hover:text-red-500 transition-colors"
-                                    >
-                                        {comment.liked ? (
-                                            <HeartFilled className="text-red-500" />
-                                        ) : (
-                                            <HeartOutlined />
-                                        )}
-                                    </button>
-                                    <span className="text-xs text-gray-500">{comment.likes} لایک</span>
+                {loading ? (
+                    <div className="flex justify-center items-center py-10">
+                        <Spin size="large" />
+                    </div>
+                ) : (
+                    <div className="space-y-4 mb-6 max-h-96 overflow-y-auto">
+                        {comments?.map((comment) => (
+                            <div key={comment._id} className="flex items-start space-x-3">
+                                <div className="flex-1">
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-sm sm:text-base font-semibold text-gray-800 dark:text-white">
+                                            {comment.userId ? comment.userId.fullName : 'کاربر حذف شده'}
+                                        </span>
+                                        <span className="text-xs text-gray-500 dark:text-green-400">{new Date(comment.createdAt).toLocaleString()}</span>
+                                    </div>
+                                    <p className="text-sm sm:text-base text-gray-700 mt-1 dark:text-white">{comment.comment}</p>
                                 </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                )}
 
-                {/* ورودی برای افزودن نظر */}
                 <div className="flex items-center space-x-3 border-t pt-4">
-                    <Avatar
-                        src="https://randomuser.me/api/portraits/men/3.jpg"
-                        size={40}
-                        className="flex-shrink-0"
-                    />
                     <Input
                         placeholder="نظر خود را بنویسید..."
                         value={newComment}
@@ -117,12 +94,26 @@ const Comment = () => {
                     />
                     <button
                         onClick={handleAddComment}
-                        className="text-blue-500 hover:text-blue-700 font-semibold text-sm sm:text-base"
+                        className={`
+    flex items-center justify-center
+    px-6 py-2
+    font-semibold text-sm sm:text-base
+    bg-or text-white
+    rounded-lg
+    shadow-neumorphic
+    hover:bg-green-700 hover:shadow-neumorphic-hover
+    disabled:bg-gray-400 disabled:text-gray-200 disabled:cursor-not-allowed
+    transition-all duration-300
+    dark:bg-or dark:hover:bg-red-500
+    dark:shadow-neumorphic-dark dark:hover:shadow-neumorphic-dark-hover
+  `}
                         disabled={!newComment.trim()}
                     >
                         ارسال
                     </button>
                 </div>
+
+                {error && <p className="text-red-500 text-sm mt-4">{error}</p>}
             </div>
         </div>
     );

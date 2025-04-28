@@ -11,8 +11,9 @@ import Baner2Module from "../modules/Landing/Baner2Module";
 import CollapsePage from "../modules/Landing/CollapsModule";
 import QR from "../modules/Landing/QR";
 import Comment from "../modules/Landing/Comment";
+import Banner3Module from "../modules/Landing/Banner3Module";
 
-function MainLandingPage() {
+function MainLandingPage({ token }) {
     const [loading, setLoading] = useState(true)
 
     setTimeout(() => {
@@ -40,6 +41,10 @@ function MainLandingPage() {
                         <h2 className="text-lg font-semibold text-or">کفش مردانه</h2>
                         <SliderProductsMen />
                     </div>
+                    <div className="mt-[150px]">
+
+                        <Banner3Module />
+                    </div>
                     <div className="mt-[300px]">
 
                         <CollapsePage />
@@ -50,7 +55,7 @@ function MainLandingPage() {
                     </div>
 
                     <div className="mt-[150px]">
-                        <Comment />
+                        <Comment token={token} />
                     </div>
 
                 </section>

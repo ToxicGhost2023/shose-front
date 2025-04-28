@@ -38,26 +38,29 @@ function SliderProductsMen() {
     }, [products]);
 
     return (
-        <Carousel autoplay autoplaySpeed={3000}>
-            {filteredProducts
-                ?.filter(product => product.category === 'مردانه')
-                .map((product, index) => (
-                    <div key={product._id || index}>
-                        <div style={contentStyle}>
-                            <Image
-                                src={product.image}
-                                alt={product.title}
-                                width={400}
-                                height={400}
-                                className='rounded-lg w-full md:h-[300px] md:max-w-[500px] object-cover' // Adjusted for responsiveness
-                            />
-                            <p className='text-center text-lg font-bold mt-4 text-or dark:text-white'>
-                                {product.title}
-                            </p>
+        <section className='md:mt-[100px]'>
+
+            <Carousel autoplay autoplaySpeed={3000}>
+                {filteredProducts
+                    ?.filter(product => product.category === 'مردانه')
+                    .map((product, index) => (
+                        <div key={product._id || index}>
+                            <div style={contentStyle}>
+                                <Image
+                                    src={product.image}
+                                    alt={product.title}
+                                    width={400}
+                                    height={400}
+                                    className='rounded-lg w-full md:h-[300px] md:max-w-[500px] object-cover' // Adjusted for responsiveness
+                                />
+                                <p className='text-center text-lg font-bold mt-4 text-or dark:text-white'>
+                                    {product.title}
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                ))}
-        </Carousel>
+                    ))}
+            </Carousel>
+        </section>
     )
 }
 

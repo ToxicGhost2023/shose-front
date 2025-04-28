@@ -8,13 +8,15 @@ export async function fetchRegister(data) {
             body: JSON.stringify(data),
         });
 
-        if (res.status === 400) {
-            return { error: "این حساب قبلاً ساخته شده" };
+
+
+        if (!res.ok) {
+            const errorData = await res.json();
+            return { error: errorData.error || "خطایی رخ داده است" };
         }
 
         const result = await res.json();
-        return { data: result };
-
+        return { data: result, error: null, };
     } catch (error) {
         return { error: "خطا در ارتباط با سرور" };
     }

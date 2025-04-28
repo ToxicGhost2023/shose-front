@@ -29,6 +29,7 @@ module.exports = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+
       animation: {
         'fade-in': 'fadeIn 1s ease-in-out',
       },

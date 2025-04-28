@@ -10,7 +10,7 @@ const NeuButton = ({ icon, onClick, tooltip, inputProps, ...rest }) => (
     className="!w-[50px] !h-[50px] !p-0 text-xl font-bold
     neumorphic
     border-none
-    rounded-[50%] "
+    rounded-[50%] dark:text-or "
 
     title={tooltip}
   />
