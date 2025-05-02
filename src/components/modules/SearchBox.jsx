@@ -45,7 +45,6 @@ function SearchBox() {
 
 
     const handleProductClick = (id) => {
-        console.log("Navigating to product:", id);
         setIsDropdownOpen(false);
         setSearchQuery("");
         router.push(`/products/${id}`);
@@ -102,12 +101,12 @@ function SearchBox() {
             </div>
 
             {isDropdownOpen && filteredProducts.length > 0 && (
-                <div className="mt-2 w-full max-h-80 overflow-y-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg absolute z-10 top-14">
+                <div className="mt-2 w-full z-20 max-h-80 overflow-y-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg absolute z-10 top-14">
                     <ul>
                         {filteredProducts.map((product) => (
                             <li
                                 key={product._id}
-                                className="p-3 border-b cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                                className="p-3  border-b cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                                 onClick={() => handleProductClick(product._id)}
                             >
                                 <h3 className="font-bold text-sm">{product.title}</h3>

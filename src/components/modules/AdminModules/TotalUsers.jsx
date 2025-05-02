@@ -1,13 +1,14 @@
 "use client";
 
 import { fetchUsersCount } from "@/store/slice/userReducer";
-import { UserOutlined } from "@ant-design/icons";
-import Link from "next/link";
+import { ArrowLeftOutlined, UserOutlined } from "@ant-design/icons";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 
 function TotalUsers() {
+    const router = useRouter();
     const dispatch = useDispatch();
     const totalUsers = useSelector((state) => state.users.totalUsers);
     const usersCountStatus = useSelector((state) => state.users.usersCountStatus);
@@ -28,7 +29,7 @@ function TotalUsers() {
                     <UserOutlined className="text-4xl text-white" />
                     <h2 className="text-xl sm:text-2xl font-semibold">تعداد کاربران</h2>
                 </section>
-                <section className="mt-10 w-full max-w-sm mx-auto p-6 dark:bg-zinc-800 rounded-xl flex flex-col items-center justify-between gap-6">
+                <section className="mt-10 w-full max-w-sm mx-auto p-6  rounded-xl flex flex-col items-center justify-between gap-6">
                     {usersCountStatus === "loading" ? (
                         <div className="text-lg text-gray-900 dark:text-white">در حال بارگذاری...</div>
                     ) : usersCountStatus === "failed" ? (
@@ -38,12 +39,13 @@ function TotalUsers() {
                             <div className="text-5xl font-bold text-gray-900 dark:text-white">
                                 {totalUsers}
                             </div>
-                            <Link
-                                href="/panelAdmin/listUsers"
-                                className="text-xl p-5 rounded-3xl w-full text-center bg-amber-600 text-white dark:text-blue-400 hover:bg-opacity-5 hover:text-opacity-100 hover:text-amber-600 transition-all"
+                            <button
+                                onClick={() => router.push("/panelAdmin/checkOrder")}
+                                className="flex items-center gap-2 text-sm sm:text-base mt-8   hover:border-or text-gray-700 border  px-4 py-[10px] rounded-xl transition duration-300 shadow-sm"
                             >
+                                <ArrowLeftOutlined className="text-lg" />
                                 مشاهده
-                            </Link>
+                            </button>
                         </>
                     )}
                 </section>

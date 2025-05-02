@@ -4,14 +4,42 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import LikeButton from './LikeButton';
-import { useState } from 'react';
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+import { addToCartAsync } from '@/store/slice/cartSlice';
+import { useEffect, useState } from 'react';
+import { jwtDecode } from "jwt-decode";
 
-
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, token }) => {
     const { title, image, content, quantity, discount, price, finalPrice, category } = product;
-   
     const { _id } = product
+    const dispatch = useDispatch();
+    const router = useRouter()
+    const [userId, setUserId] = useState(null);
 
+    useEffect(() => {
+        const decoded = jwtDecode(token);
+        setUserId(decoded.userId);
+    }, [token, router]);
+
+
+
+
+    const handleAddToCart = async (product) => {
+        try {
+            const payload = {
+                userId,
+                productId: product._id,
+                quantity: 1,
+                price: product.finalPrice
+            }
+            await dispatch(addToCartAsync(payload)).unwrap();
+
+        } catch (error) {
+            console.error("خطا در افزودن به سبد خرید:", error);
+
+        }
+    };
 
     return (
         <>
@@ -78,13 +106,16 @@ const ProductCard = ({ product }) => {
                         >
                             جزئیات
                         </Link>
-                        <button className="flex-1 bg-blue-500 text-white text-xs sm:text-sm px-3 py-2 rounded-lg hover:bg-blue-600 transition">
+                        <button
+                            onClick={() => handleAddToCart(product)}
+
+                            className="flex-1 bg-blue-500 text-white text-xs sm:text-sm px-3 py-2 rounded-lg hover:bg-blue-600 transition">
                             + سبد خرید
                         </button>
                     </div>
                 </div>
             </div>
-            
+
         </>
 
     );

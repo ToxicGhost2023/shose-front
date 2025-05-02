@@ -8,7 +8,7 @@ import ProductCard from "../modules/ProductspageModule/ProductCard";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "@/store/slice/productsReducer";
 
-function ProductsPage() {
+function ProductsPage({token}) {
     const dispatch = useDispatch();
     const { products, status, error } = useSelector((state) => state.products);
     const [filteredProducts, setFilteredProducts] = useState([]);
@@ -70,7 +70,7 @@ function ProductsPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         {visibleProducts.length > 0 ? (
                             visibleProducts.map((product) => (
-                                <ProductCard key={product._id} product={product} />
+                                <ProductCard key={product._id} product={product} token={token} />
                             ))
                         ) : (
                             <p className="col-span-full text-center text-gray-500 dark:text-gray-400">

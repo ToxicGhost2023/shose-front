@@ -37,7 +37,7 @@ const items = [
         label: 'مدیریت',
         icon: <UserSwitchOutlined />,
         children: [
-            { key: '5', label: "ssss" }
+            { key: '5', label: <Link href="/panelAdmin/checkOrder"> وضعیت سفارشات</Link> }
         ],
     },
     {

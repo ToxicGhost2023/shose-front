@@ -4,12 +4,13 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { UserOutlined, ShoppingOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import { UserOutlined, ShoppingOutlined } from "@ant-design/icons";
 import DarkModeToggle from "../modules/Header/DarkModeButton";
 import Loader from "../modules/Loader";
 import DrawerHeader from "../modules/Header/DrawerHeader";
 import NeuButton from "../modules/Header/NeuButton";
 import SearchBox from "../modules/SearchBox";
+import Basket from "../modules/Header/Basket";
 
 function Header({ token }) {
     const [loading, setLoading] = useState(false);
@@ -42,12 +43,14 @@ function Header({ token }) {
                         <div onClick={() => handleNavigation("/products")}>
                             <NeuButton icon={<ShoppingOutlined />} tooltip="فروشگاه" />
                         </div>
-                        <div onClick={() => handleNavigation("/shoping")}>
-                            <NeuButton icon={<ShoppingCartOutlined />} tooltip="سبد خرید" />
+                        <div onClick={() => handleNavigation("/shopping")}>
+                            <Basket
+                              
+                                tooltip="سبد خرید" />
                         </div>
                     </div>
                 </div>
-
+                {/*  */}
 
                 <div className="w-full sm:w-auto">
                     <SearchBox />

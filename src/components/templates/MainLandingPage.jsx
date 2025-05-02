@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Features from "../modules/Landing/Features";
 import ScrollButton from "../modules/ScrollButton";
 import BanerLanding from "./BanerLanding";
@@ -16,9 +16,14 @@ import Banner3Module from "../modules/Landing/Banner3Module";
 function MainLandingPage({ token }) {
     const [loading, setLoading] = useState(true)
 
-    setTimeout(() => {
-        setLoading(false)
-    }, "2000");
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 2000);
+
+        return () => clearTimeout(timer);
+    }, []);
+
 
     return (
         <>

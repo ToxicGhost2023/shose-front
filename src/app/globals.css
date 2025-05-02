@@ -4,20 +4,19 @@
 
 :root {
   --text: black;
-  --background: #e0e0e0;
+  --background: #e0e0e02c;
   /* پس‌زمینه روشن برای نیومورفیسم */
   --neu-shadow1: #bababa;
   --neu-shadow2: #ffffff;
 }
 
+
+
 .dark {
   --background: #2b2b2b;
-  /* خاکستری تیره برای دارک مود */
   --text: white;
   --neu-shadow1: #1a1a1a;
-  /* سایه تیره‌تر */
   --neu-shadow2: #3c3c3c;
-  /* سایه روشن‌تر */
 }
 
 * {
