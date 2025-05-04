@@ -3,8 +3,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-
-
 function BanerModule() {
 
 
@@ -21,7 +19,8 @@ function BanerModule() {
                             height={1200}
                             alt="بنر کفش"
                             className="object-fill rounded-full w-full h-[40vh] md:h-[80vh] md:w-[90vh] z-10 animate-fade-in"
-                            priority
+                            sizes="(max-width: 768px) 100vw, 50vw"
+
                         />
                         {/* سایه */}
                         <div className="absolute bottom-5 w-1/3 h-6 bg-black/40 blur-md rounded-full z-0"></div>
@@ -45,12 +44,14 @@ function BanerModule() {
 
                             <Link
                                 href="/products"
+                                prefetch={true}
                                 className="bg-white px-6 py-3  text-gray-500 font-semibold rounded-full hover:bg-orange-600 hover:text-w transition-all duration-500"
                             >
                                 همین حالا ببینید!
                             </Link>
                             <Link
                                 href="/shopping"
+                                prefetch={false}
                                 className="bg-white px-8 py-3  text-gray-500 font-semibold rounded-full hover:bg-orange-600 hover:text-w transition-all duration-500"
                             >
                                 سبد خرید من!

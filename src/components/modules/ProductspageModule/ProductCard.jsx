@@ -10,6 +10,9 @@ import { addToCartAsync } from '@/store/slice/cartSlice';
 import { useEffect, useState } from 'react';
 import { jwtDecode } from "jwt-decode";
 
+
+
+
 const ProductCard = ({ product, token }) => {
     const { title, image, content, quantity, discount, price, finalPrice, category } = product;
     const { _id } = product
@@ -102,6 +105,7 @@ const ProductCard = ({ product, token }) => {
                     <div className="flex gap-2 mt-3">
                         <Link
                             href={`/products/${_id}`}
+                            prefetch={true}
                             className="flex-1 bg-or text-white text-xs sm:text-sm px-3 py-2 rounded-lg text-center hover:bg-orange-600 transition"
                         >
                             جزئیات

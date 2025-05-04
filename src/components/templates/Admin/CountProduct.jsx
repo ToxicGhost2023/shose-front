@@ -10,25 +10,23 @@ export default function CountProduct() {
 
     const brandMap = new Map();
 
-    // جمع آوری اطلاعات فروش و موجودی برای هر برند
     products.forEach((product) => {
         const brand = product.brand || "برند نامشخص";
         if (!brandMap.has(brand)) {
             brandMap.set(brand, { stock: 0, sales: 0 });
         }
         const current = brandMap.get(brand);
-        current.stock += product.quantity || 0; // جمع آوری موجودی
-        current.sales += product.sold || 0;     // جمع آوری تعداد فروش
+        current.stock += product.quantity || 0;
+        current.sales += product.sold || 0;
     });
 
-    // تبدیل داده‌ها به یک آرایه و مرتب کردن بر اساس تعداد فروش
     const data = Array.from(brandMap.entries()).map(([brand, stats]) => ({
         name: brand,
         sales: stats.sales,
         stock: stats.stock,
     }));
 
-    data.sort((a, b) => b.sales - a.sales); // مرتب سازی بر اساس تعداد فروش
+    data.sort((a, b) => b.sales - a.sales);
 
     return (
         <div dir="rtl" className="p-6">

@@ -22,10 +22,6 @@ async function MainPanelAdmin() {
             <div className="w-full md:w-full">
                 <CountProduct />
             </div>
-            <aside className="mt-[50px] flex flex-col md:flex-row md:items-start md:gap-20">
-
-
-            </aside>
 
             {/* محتوای اصلی */}
             <main className="flex-1 mt-[100px] grid w-full grid-cols-1 gap-[60px] sm:grid-cols-2 lg:grid-cols-3 auto-rows-min">

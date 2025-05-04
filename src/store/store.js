@@ -7,6 +7,7 @@ import commentsSlice from './slice/commentsSlice'
 import cartSlice from './slice/cartSlice'
 import orderSlice from './slice/orderSlice'
 import barChartSlice from './slice/barChartSlice'
+
 export const store = configureStore({
     reducer: {
         products: productReducer,
@@ -15,5 +16,6 @@ export const store = configureStore({
         cart: cartSlice,
         order: orderSlice,
         barChart: barChartSlice,
+
     },
 })

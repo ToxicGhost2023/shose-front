@@ -3,12 +3,22 @@
 import { useEffect, useMemo, useState } from "react";
 import ProductSearchBox from "../modules/ProductspageModule/ProductSearchBox";
 import SideBarProducts from "../modules/ProductspageModule/SideBarProducts";
-import Loader from "../modules/Loader";
 import ProductCard from "../modules/ProductspageModule/ProductCard";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "@/store/slice/productsReducer";
 
-function ProductsPage({token}) {
+const ProductSkeleton = () => (
+    <div className="w-full bg-white dark:bg-gray-800 rounded-lg shadow-md animate-pulse">
+        <div className="w-full h-[150px] bg-gray-200 rounded-t-lg" />
+        <div className="p-4">
+            <div className="h-4 bg-gray-400 rounded w-3/4 mb-2" />
+            <div className="h-3 bg-gray-400 rounded w-1/2 mb-4" />
+            <div className="h-8 bg-gray-400 rounded w-1/3" />
+        </div>
+    </div>
+);
+
+function ProductsPage({ token }) {
     const dispatch = useDispatch();
     const { products, status, error } = useSelector((state) => state.products);
     const [filteredProducts, setFilteredProducts] = useState([]);
@@ -41,19 +51,37 @@ function ProductsPage({token}) {
         setVisibleCount((prev) => prev + 4);
     };
 
-    if (status === "loading")
+    if (status === "loading") {
         return (
-            <div className="flex items-center justify-center min-h-screen w-full">
-                <Loader />
+            <div className="p-4">
+                <div className="mb-4">
+                    <div className="h-10 bg-gray-200 rounded w-full animate-pulse" />
+                </div>
+                <div className="flex flex-col lg:flex-row">
+                    <aside className="w-full lg:w-[250px] lg:fixed lg:overflow-y-auto dark:bg-gray-800 p-4 rounded-md mb-4 lg:mb-0">
+                        <div className="h-40 bg-gray-200 rounded animate-pulse" />
+                    </aside>
+                    <main className="flex-1 lg:mr-[260px] mt-4 lg:mt-0">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            {Array(4)
+                                .fill()
+                                .map((_, index) => (
+                                    <ProductSkeleton key={index} />
+                                ))}
+                        </div>
+                    </main>
+                </div>
             </div>
         );
+    }
 
-    if (status === "failed")
+    if (status === "failed") {
         return (
             <div className="flex items-center justify-center min-h-screen w-full">
                 <p className="text-red-500">{error || "خطایی در بارگذاری محصولات رخ داد"}</p>
             </div>
         );
+    }
 
     return (
         <div className="p-4">

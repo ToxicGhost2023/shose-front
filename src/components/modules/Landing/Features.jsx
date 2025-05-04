@@ -47,6 +47,7 @@ function Features() {
 
                     <Link
                         href="/products"
+                        prefetch={true}
                         className="neumorphic w-[180px] md:w-[220px] text-center relative z-30 text-xs md:text-sm rounded-full overflow-hidden group hover:text-white transition duration-300"
                     >
                         <span className="relative z-10 flex justify-center items-center gap-2 py-1.5 md:py-2">
