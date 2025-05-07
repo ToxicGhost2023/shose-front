@@ -6,7 +6,6 @@ import React from 'react'
 function Baner2Module() {
     return (
         <div className="relative w-full h-[100vh] md:h-[100vh] lg:h-[100vh] rounded-xl overflow-hidden my-6">
-            {/* بک‌گراند بنر */}
             <Image
                 src="/images/banner4.png"
                 alt="banner"
